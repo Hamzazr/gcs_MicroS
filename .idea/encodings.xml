@@ -7,5 +7,6 @@
     <file url="file://$PROJECT_DIR$/Groupe/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Professeur/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/server_eureka/src/main/java" charset="UTF-8" />
   </component>
 </project>
