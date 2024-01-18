@@ -2,7 +2,7 @@ package iir5.projet.Etudiant.repository;
 
 
 
-import iir5.projet.Etudiant.model.Student;
+import iir5.projet.Etudiant.entities.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

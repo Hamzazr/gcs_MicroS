@@ -11,6 +11,7 @@
         <option value="$PROJECT_DIR$/Professeur/pom.xml" />
         <option value="$PROJECT_DIR$/Etudiant/pom.xml" />
         <option value="$PROJECT_DIR$/server_eureka/pom.xml" />
+        <option value="$PROJECT_DIR$/gateway/gateway/pom.xml" />
       </list>
     </option>
     <option name="workspaceImportForciblyTurnedOn" value="true" />

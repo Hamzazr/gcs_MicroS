@@ -1,7 +1,7 @@
 package iir5.projet.Etudiant.controllers;
 
 
-import iir5.projet.Etudiant.model.Student;
+import iir5.projet.Etudiant.entities.Student;
 import iir5.projet.Etudiant.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

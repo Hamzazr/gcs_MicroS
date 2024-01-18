@@ -1,15 +1,16 @@
-package iir5.projet.Etudiant;
+package com.fateway.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
+
 @SpringBootApplication
 @EnableDiscoveryClient
-public class EtudiantApplication {
+public class GatewayApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(EtudiantApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(GatewayApplication.class, args);
+    }
 
 }
