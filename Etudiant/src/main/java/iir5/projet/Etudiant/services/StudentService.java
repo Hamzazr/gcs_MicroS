@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -20,14 +21,20 @@ public class StudentService {
     private RestTemplate restTemplate;
     private final String URL = "http://localhost:8888/SERVICE-ETUDIANT";
 
-    public List<StudentResponse> findAll() {
-        List<Student> cars = studentRepository.findAll();
-        ResponseEntity<GroupCourse[]> response = restTemplate.getForEntity(this.URL + "/api/students", GroupCourse[].class);
-        GroupCourse[] groupeC = response.getBody();
-        return cars.stream().map((Student student) -> mapToCarResponse(student, groupeC)).toList();
+    public List<Student> findAll() {
+        return studentRepository.findAll();
     }
 
-    private StudentResponse mapToCarResponse(Student student, GroupCourse[] groups) {
+    public Student findById(Long id) throws Exception {
+        Optional<Student> studiant = studentRepository.findById(id);
+        if (studiant.isPresent()) {
+            return studiant.get();
+        } else {
+            throw new Exception("Client not found");
+        }
+    }
+
+    private StudentResponse mapTostudentResponse(Student student, GroupCourse[] groups) {
         GroupCourse foundGroupe = Arrays.stream(groups)
                 .filter(groupe -> groupe.getId().equals(groupe.getId()))
                 .findFirst()
@@ -44,16 +51,43 @@ public class StudentService {
     }
 
 
-    public StudentResponse findById(Long id) throws Exception {
-        Student student = studentRepository.findById(id).orElseThrow(() -> new Exception("Invalid Etudiant Id"));
-        GroupCourse groupeC = restTemplate.getForObject(this.URL + "/api/students" + student.getId(), GroupCourse.class);
-        return StudentResponse.builder()
-                .id(student.getId())
-                .firstName(student.getFirstName())
-                .lastName(student.getLastName())
-                .phone(student.getPhone())
-                .email(student.getEmail())
-                .groups(groupeC)
-                .build();
+
+
+    public List<StudentResponse> findByGroupId(Long groupId) {
+        List<Student> students = studentRepository.findByGroupCourseId(groupId);
+        ResponseEntity<GroupCourse> response = restTemplate.getForEntity(this.URL + "/api/groupCourses/" + groupId, GroupCourse.class);
+        GroupCourse group = response.getBody();
+
+        return students.stream()
+                .map(student -> mapTostudentResponse(student, new GroupCourse[]{group}))
+                .toList();
+    }
+
+    public Student addStudent(Student student) {
+        return studentRepository.save(student);
+    }
+
+    public Student updateStudent(Long id, Student updatedStudent) throws Exception {
+        Optional<Student> existingStudent = studentRepository.findById(id);
+        if (existingStudent.isPresent()) {
+            Student studentToUpdate = existingStudent.get();
+            studentToUpdate.setFirstName(updatedStudent.getFirstName());
+            studentToUpdate.setEmail(updatedStudent.getEmail());
+            studentToUpdate.setLastName(updatedStudent.getLastName());
+            studentToUpdate.setPhone(updatedStudent.getPhone());
+
+            return studentRepository.save(studentToUpdate);
+        } else {
+            throw new Exception("Student not found");
+        }
+    }
+
+    public void deleteClient(Long id) throws Exception {
+        Optional<Student> student = studentRepository.findById(id);
+        if (student.isPresent()) {
+            studentRepository.deleteById(id);
+        } else {
+            throw new Exception("Student not found");
+        }
     }
 }

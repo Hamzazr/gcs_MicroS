@@ -17,18 +17,10 @@ public class GroupCourse {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
 	private String name;
 	private Long cours;
 	private Long teacher;
 
-	// Establishing many-to-many relationship with Student
-	@ManyToMany
-	@JoinTable(
-			name = "group_course_student",
-			joinColumns = @JoinColumn(name = "group_course_id"),
-			inverseJoinColumns = @JoinColumn(name = "student_id")
-	)
 	private Set<Student> students = new HashSet<>();
 
 }

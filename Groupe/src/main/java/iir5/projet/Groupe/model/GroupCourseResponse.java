@@ -1,6 +1,7 @@
 package iir5.projet.Groupe.model;
 
 import iir5.projet.Groupe.entities.Course;
+import iir5.projet.Groupe.entities.Student;
 import iir5.projet.Groupe.entities.Teacher;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,5 +17,6 @@ public class GroupCourseResponse {
     private String name;
     private Teacher teacherid;
     private Course cours;
+    private Student student;
 
 }

@@ -20,10 +20,9 @@ public class Student {
 	 private String lastName;
 	 private String phone;
 	 private String email;
+	 private Long idGroup;
 
-	 @ManyToOne
-	 @JoinColumn(name = "group_course_id")
-	 private GroupCourse groupCourse;
+
 
 
 

@@ -16,6 +16,5 @@ public class GroupCourse {
 	 private String name;
 	 private Long cours;
 	 private Long teacher;
-	 @OneToMany(mappedBy = "groupCourse")
-	 private Set<Student> students = new HashSet<>();
+
 }
