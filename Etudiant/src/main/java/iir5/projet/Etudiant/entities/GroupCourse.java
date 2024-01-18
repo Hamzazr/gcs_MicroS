@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -13,4 +14,8 @@ import java.util.Set;
 public class GroupCourse {
 	 private Long id;
 	 private String name;
+	 private Long cours;
+	 private Long teacher;
+	 @OneToMany(mappedBy = "groupCourse")
+	 private Set<Student> students = new HashSet<>();
 }
