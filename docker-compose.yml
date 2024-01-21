@@ -1,0 +1,153 @@
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    networks:
+      - microservices-network
+
+  ########CONSUL
+  consul:
+    image: consul:1.15.4
+    container_name: consul-container
+    ports:
+      - "8500:8500"
+    networks:
+      - microservices-network
+  ##############gaTEWAY
+  gateway-service:
+    build:
+      context: gateway
+    ports:
+      - "8888:8888"
+    depends_on:
+      - mysql
+      - consul
+    networks:
+      - microservices-network
+    environment:
+      SPRING_CLOUD_CONSUL_HOST: consul
+      SPRING_CLOUD_CONSUL_PORT: 8500
+      SPRING_CLOUD_CONSUL_DISCOVERY_ENABLED: 'true'
+  ################PROF
+  professeur-service:
+    container_name: professeur-service
+    build:
+      context: Professeur
+    ports:
+      - "8077:8077"
+    depends_on:
+      - mysql
+      - consul
+      - gateway-service
+    networks:
+      - microservices-network
+    environment:
+      SPRING_CLOUD_CONSUL_HOST: consul
+      SPRING_CLOUD_CONSUL_PORT: 8500
+      SPRING_CLOUD_CONSUL_DISCOVERY_ENABLED: 'true'
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/gcs_professeur?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    healthcheck:
+      test: "/user/bin/mysql --user=root --password=root --execute \"SHOWDATABASES;\""
+      interval: 5s
+      timeout: 2s
+      retries: 100
+  ################ETUD
+  etudiant-service:
+    build:
+      context: Etudiant
+    ports:
+      - "8079:8079"
+    depends_on:
+      - mysql
+      - consul
+      - gateway-service
+    networks:
+      - microservices-network
+    environment:
+      SPRING_CLOUD_CONSUL_HOST: consul
+      SPRING_CLOUD_CONSUL_PORT: 8500
+      SPRING_CLOUD_CONSUL_DISCOVERY_ENABLED: 'true'
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/gcs_etudiant?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    healthcheck:
+      test: "/user/bin/mysql --user=root --password=root --execute \"SHOWDATABASES;\""
+      interval: 5s
+      timeout: 2s
+      retries: 100
+
+  ################COURS
+  cours-service:
+    build:
+      context: Cours
+    ports:
+      - "8076:8076"
+    depends_on:
+      - mysql
+      - consul
+      - gateway-service
+    networks:
+      - microservices-network
+    environment:
+      SPRING_CLOUD_CONSUL_HOST: consul
+      SPRING_CLOUD_CONSUL_PORT: 8500
+      SPRING_CLOUD_CONSUL_DISCOVERY_ENABLED: 'true'
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/gcs_cours?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    healthcheck:
+      test: "/user/bin/mysql --user=root --password=root --execute \"SHOWDATABASES;\""
+      interval: 5s
+      timeout: 2s
+      retries: 100
+
+  ################GROUPE
+  groupe-service:
+    build:
+      context: Groupe
+    ports:
+      - "8078:8078"
+    depends_on:
+      - mysql
+      - consul
+      - gateway-service
+      - etudiant-service
+      - professeur-service
+      - cours-service
+    networks:
+      - microservices-network
+    environment:
+      SPRING_CLOUD_CONSUL_HOST: consul
+      SPRING_CLOUD_CONSUL_PORT: 8500
+      SPRING_CLOUD_CONSUL_DISCOVERY_ENABLED: 'true'
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/gcs_groupec?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    healthcheck:
+      test: "/user/bin/mysql --user=root --password=root --execute \"SHOWDATABASES;\""
+      interval: 5s
+      timeout: 2s
+      retries: 100
+
+
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "8090:80"
+    networks:
+      - microservices-network
+
+networks:
+  microservices-network:
+    driver: bridge
