@@ -17,8 +17,8 @@ import java.util.Optional;
 public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
-    @Autowired
-    private RestTemplate restTemplate;
+    //@Autowired
+    //private RestTemplate restTemplate;
     private final String URL = "http://localhost:8888/SERVICE-ETUDIANT";
 
     public List<Student> findAll() {
@@ -46,23 +46,21 @@ public class StudentService {
                 .lastName(student.getLastName())
                 .phone(student.getPhone())
                 .email(student.getEmail())
-                .groups(foundGroupe)
+
                 .build();
     }
 
 
 
 
-    public List<StudentResponse> findByGroupId(Long groupId) {
-        List<Student> students = studentRepository.findByGroupCourseId(groupId);
-        ResponseEntity<GroupCourse> response = restTemplate.getForEntity(this.URL + "/api/groupCourses/" + groupId, GroupCourse.class);
-        GroupCourse group = response.getBody();
+    //public List<StudentResponse> findByGroupId(Long groupId) {
+    //  List<Student> students = studentRepository.findByGroupCourseId(groupId);
+    //ResponseEntity<GroupCourse> response = restTemplate.getForEntity(this.URL + "/api/groupCourses/" + groupId, GroupCourse.class);
+    //GroupCourse group = response.getBody();
 
-        return students.stream()
-                .map(student -> mapTostudentResponse(student, new GroupCourse[]{group}))
-                .toList();
-    }
-
+    //return students.stream()
+    //      .map(student -> mapTostudentResponse(student, new GroupCourse[]{group}))
+    //    .toList();
     public Student addStudent(Student student) {
         return studentRepository.save(student);
     }
@@ -91,3 +89,7 @@ public class StudentService {
         }
     }
 }
+
+
+
+

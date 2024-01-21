@@ -55,14 +55,14 @@ public class StudentController {
         studentRepository.deleteById(id);
     }
 
-    @GetMapping("/{groupId}")
-    public ResponseEntity<List<StudentResponse>> getStudentsByGroupId(@PathVariable Long groupId) {
-        try {
-            List<StudentResponse> students = studentService.findByGroupId(groupId);
-            return ResponseEntity.ok(students);
-        } catch (Exception e) {
-            // Handle the exception (e.g., log it) and return an appropriate response
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+    //@GetMapping("/{groupId}")
+    //public ResponseEntity<List<StudentResponse>> getStudentsByGroupId(@PathVariable Long groupId) {
+    //    try {
+    //        List<StudentResponse> students = studentService.findByGroupId(groupId);
+    //        return ResponseEntity.ok(students);
+    //    } catch (Exception e) {
+    //        // Handle the exception (e.g., log it) and return an appropriate response
+    //        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    //    }
+    //}
 }

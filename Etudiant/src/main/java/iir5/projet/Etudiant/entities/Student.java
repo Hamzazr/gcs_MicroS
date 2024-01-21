@@ -20,7 +20,7 @@ public class Student {
 	 private String lastName;
 	 private String phone;
 	 private String email;
-	 private Long idGroup;
+	 //private Long idGroup;
 
 
 

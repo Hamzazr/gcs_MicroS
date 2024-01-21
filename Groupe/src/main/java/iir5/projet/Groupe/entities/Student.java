@@ -9,7 +9,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -22,6 +24,8 @@ public class Student {
         private String phone;
         private String email;
 
-        @ManyToMany(mappedBy = "students")
-        private Set<GroupCourse> groupCourses = new HashSet<>();
+        //@ManyToMany(mappedBy = "students")
+        //private List<GroupCourse> groupCourses = new ArrayList<>();
+        //@ManyToMany(mappedBy = "students")
+        //private Set<GroupCourse> groupCourses = new HashSet<>();
 }
